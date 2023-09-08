@@ -1,16 +1,12 @@
 package org.iitwforce.restassured.restassured;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.util.List;
 
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import io.restassured.path.json.JsonPath;
-
-//import com.jayway.jsonpath.JsonPath;
+import com.jayway.jsonpath.JsonPath;
 
 import io.restassured.response.Response;
 //import net.minidev.json.JSONArray;
@@ -34,15 +30,27 @@ public class DummyAPITests extends RestLibrary{
 	public void verifyGetAllEmployees() {
 		try 
 		{
-			response =  getServiceResponse(pro.getProperty("checkgetapi"));
+			response =  getServiceResponse(pro.getProperty("getEmployees"));
 			System.out.println(response.getStatusCode());//429
 			System.out.println(response.prettyPrint());
-			JSONArray jsonArr = JsonPath.read(response.getBody(), "$..data.summary.total") ;
-			 
+			
+			String json ="{\r\n   \"lotto\":{\r\n      \"lottoId\":5,\r\n      \"winning-numbers\":[2,45,34,23,7,5,3],\r\n      \"winners\":[\r\n         {\r\n            \"winnerId\":23,\r\n            \"numbers\":[2,45,34,23,3,5]\r\n         },\r\n         {\r\n            \"winnerId\":54,\r\n            \"numbers\":[52,3,12,11,18,22]\r\n         }\r\n      ]\r\n   }\r\n}";
+					 
+			JsonPath path = JsonPath.compile("$.lotto.lottoId");
+			int successList = path.read(json);
+			System.out.println("Actual Status:: " +successList  );
+			
+			path = JsonPath.compile("$.lotto.winning-numbers");
+			List<Object> winningList = path.read(json);
+			System.out.println("Actual Size:: " +winningList.size()  );
+			System.out.println("Actual Value:: " +winningList.get(0)  );
+			
+			String expected="success";
+			// Assert.assertEquals(actual,expected);
 //			String expectedEmployeeName="Tiger Nixon";
-			System.out.println("Employee Name received from Response " +jsonArr );
+		 
 
-			//Assert.assertEquals(actualEmployeeName,expectedEmployeeName);
+			 
 
 		} catch (Exception e) {
 			e.printStackTrace();
