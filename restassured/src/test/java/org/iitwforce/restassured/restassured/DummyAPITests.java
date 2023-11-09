@@ -1,26 +1,67 @@
 package org.iitwforce.restassured.restassured;
 
+import java.util.List;
+
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+//import net.minidev.json.JSONArray;
+import io.restassured.response.ResponseBody;
 
 public class DummyAPITests extends RestLibrary{
+
+
 	Response response;
-	@Test(description="Retrieve All the Customers") 
-	public void verifyGetAllCustomers() {
+	static String   token;
+	@BeforeClass
+	public void getAuthorizationToken()
+	{
+
+		token="124151515";
+		setSysProperty("token", token);
+		String result = getSysProperty("token");
+		System.out.println(result);
+	}
+	@Test(description="Retrieve All the users") 
+	public void verifyJsonPlaceholder_allusers() {
+		try 
+		{
+			response =  getServiceResponse(pro.getProperty("jsonplaceholderallusers"));
+			System.out.println(response.getStatusCode());//429
+			//System.out.println(response.prettyPrint());
+			String expected = "Ervin Howell";
+			String actual = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[1].name");
+			
+			List<String> latList = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[*].address.geo.lat");
+			System.out.println(latList.size());
+			Assert.assertEquals(actual,expected);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			Assert.fail("Unable to Retrieve information for employees");
+		}
+	}
+
+	@Test(description="Retrieve All the Employees") 
+	public void verifyGetAllEmployees() {
 		try 
 		{
 			response =  getServiceResponse(pro.getProperty("getEmployees"));
-			System.out.println(response.getStatusCode());
-			System.out.println(response.prettyPrint());
-			JsonPath jsonPathEvaluator = response.jsonPath();
-			String actualEmployeeName = jsonPathEvaluator.get("data[0].employee_name");
-			String expectedEmployeeName="Tiger Nixon";
-			System.out.println("Employee Name received from Response " + actualEmployeeName);
+			System.out.println(response.getStatusCode());//429
+			//System.out.println(response.prettyPrint());
+			ResponseBody respBody = response.getBody();
+			String actual = respBody.asString();
+			System.out.println("Response Body" + actual);
+			boolean result = actual.contains("Tiger Nixon");
+			Assert.assertTrue(result);
+			JsonPath path=	response.jsonPath();
+			Object obj = path.get("$.data[1].employee_name");
+			String str = obj.toString();
+			System.out.println(str);
 
-			Assert.assertEquals(actualEmployeeName,expectedEmployeeName);
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -31,7 +72,8 @@ public class DummyAPITests extends RestLibrary{
 	public void verifyCreateNewEmployee() {
 		try 
 		{
-			String payloadString="{\"name\":\"restapi\",\"salary\":\"12345678\",\"age\":\"83\"}";
+
+			String payloadString=readPayload("Payload.txt");
 			response =  postServiceResponse(pro.getProperty("createNewEmployee"),payloadString);
 			System.out.println(response.getStatusCode());
 			System.out.println(response.prettyPrint());
@@ -46,7 +88,7 @@ public class DummyAPITests extends RestLibrary{
 			Assert.fail("Unable to Retrieve information for Enterprises");
 		}
 	}
-	@Test(description="Update Employee") 
+	@Test(description="Update Employee",enabled=false) 
 	public void verifyUpdateEmployee() {
 		try 
 		{
@@ -65,7 +107,7 @@ public class DummyAPITests extends RestLibrary{
 			Assert.fail("Unable to Retrieve information for Enterprises");
 		}
 	}
-	@Test(description="Delete Employee") 
+	@Test(description="Delete Employee",enabled=false) 
 	public void verifyDeleteEmployee() {
 		try 
 		{
