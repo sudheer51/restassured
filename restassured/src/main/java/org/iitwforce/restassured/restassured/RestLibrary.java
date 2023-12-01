@@ -64,6 +64,8 @@ public class RestLibrary {
 	{
 		RequestSpecification request = RestAssured.given();
 		request.headers(provideHeaders());
+		System.out.println("###############################################");
+		System.out.println("Request URL :::: " + serviceURL);
 		Response response =  request.when().get(serviceURL);
 
 		//RestAssured.given().headers(provideHeaders()).when().get(serviceURL);
