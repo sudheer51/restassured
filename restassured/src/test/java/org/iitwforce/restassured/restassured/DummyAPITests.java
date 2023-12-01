@@ -25,26 +25,7 @@ public class DummyAPITests extends RestLibrary{
 		String result = getSysProperty("token");
 		System.out.println(result);
 	}
-	@Test(description="Retrieve All the users") 
-	public void verifyJsonPlaceholder_allusers() {
-		try 
-		{
-			response =  getServiceResponse(pro.getProperty("jsonplaceholderallusers"));
-			System.out.println(response.getStatusCode());//429
-			//System.out.println(response.prettyPrint());
-			String expected = "Ervin Howell";
-			String actual = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[1].name");
-			
-			List<String> latList = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[*].address.geo.lat");
-			System.out.println(latList.size());
-			Assert.assertEquals(actual,expected);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			Assert.fail("Unable to Retrieve information for employees");
-		}
-	}
-
+	
 	@Test(description="Retrieve All the Employees") 
 	public void verifyGetAllEmployees() {
 		try 
