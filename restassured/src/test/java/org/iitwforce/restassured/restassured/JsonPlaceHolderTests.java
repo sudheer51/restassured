@@ -18,9 +18,12 @@ public class JsonPlaceHolderTests extends RestLibrary{
 		{
 			response =  getServiceResponse(pro.getProperty("jsonplaceholderallusers"));
 			System.out.println(response.getStatusCode());//429
-			 
-			String expected = "Smith";
-			String actual = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[1].lastname");
+			System.out.println("Response Received :::: " + response.asString());
+			
+			String expected = "Bret";
+			String actual = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[0].username");
+			System.out.println("Actual " + actual);
+			
 			
 			List<String> latList = com.jayway.jsonpath.JsonPath.read(response.asString(), "$.[*].address.geo.lat");
 			System.out.println(latList.size());

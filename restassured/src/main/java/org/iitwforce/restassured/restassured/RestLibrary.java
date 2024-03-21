@@ -60,18 +60,13 @@ public class RestLibrary {
 		}
 
 	}  
-	public static Response getServiceResponse(String serviceURL) throws Exception 
+	public static Response getServiceResponse(String requestURL) throws Exception 
 	{
 		RequestSpecification request = RestAssured.given();
 		request.headers(provideHeaders());
 		System.out.println("###############################################");
-		System.out.println("Request URL :::: " + serviceURL);
-		Response response =  request.when().get(serviceURL);
-		
-		//Response respone = request.given().headers(provideHeaders()).when().get(serviceURL);
-
-		//RestAssured.given().headers(provideHeaders()).when().get(serviceURL);
-
+		System.out.println("Request URL :::: " + requestURL);
+		Response response =  request.when().get(requestURL);
 		return response;
 	}  
 	public static Response postServiceResponse(String serviceURL,String payloadString) throws Exception 
