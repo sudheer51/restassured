@@ -1,7 +1,7 @@
 {
-  "id": 0,
+  "id": 17,
   "category": {
-    "id": 0,
+    "id": 17,
     "name": "string"
   },
   "name": "doggie",
@@ -10,7 +10,7 @@
   ],
   "tags": [
     {
-      "id": 0,
+      "id": 17,
       "name": "string"
     }
   ],
