@@ -34,9 +34,10 @@ public class RestLibrary {
 
 		// Load file so we can use into our script 
 		pro.load(fis);
+		
 
 	} 
-	public static Map<String, Object> provideHeaders( ) throws Exception{
+	public static Map<String, Object> provideHeaders() throws Exception{
 		try{
 			headersMap = new LinkedHashMap<String, Object>();
 			headersMap.put("Content-type","application/json");
@@ -60,6 +61,7 @@ public class RestLibrary {
 		}
 
 	}  
+	
 	public static Response getServiceResponse(String requestURL) throws Exception 
 	{
 		RequestSpecification request = RestAssured.given();
